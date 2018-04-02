@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Capsulelink</title>
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600" rel="stylesheet">
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="content-wrapper">
+      <h2>capsule<span class="green">link</span></h2>
+      <button id="addLink" class="btn myButton"><i class="ion ion-plus green"></i> Add this page</button>
+      <button id="clearLinks" class="btn myButton"><i class="ion ion-close green"></i> Clear all</button>
+
+      <div class="links" id="links">
+        
+      </div>
+      <div class="callToActionWrapper">
+          <div class="container">
+              <input type="text" id="groupLinkTitle" placeholder="Title (optional)">
+              <button class="btn generateButton" id="generateBtn">Generate group link</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay">
+      <div class="popup">
+        <h4>Group url</h4>
+        <input type="text" class="generatedInput" id="generatedUrl">
+        <button class="btn generateButton" id="navigateToLink">Go to link</button>
+        <div class="close-popup"><i class="ion ion-close"></i></div>
+      </div>
+  </div>
+
+  <script src="popup.js"></script>
+  <script src="jquery-1.10.2.min.js"></script>
+</body>
+</html>
