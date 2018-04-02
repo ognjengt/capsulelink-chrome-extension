@@ -2,7 +2,15 @@
 window.onload = function() {
 
   chrome.storage.sync.get(['addedLinks'], function(result) {
-    RenderLinks(result.addedLinks);
+    if(!chrome.runtime.lastError) {
+      RenderLinks(result.addedLinks);
+    }
+    else {
+      chrome.storage.sync.set({'addedLinks': []}, function() {
+        RenderLinks([]);
+      });
+    }
+    
   });
 
   document.getElementById('addLink').addEventListener('click', function(e) {
@@ -59,7 +67,10 @@ window.onload = function() {
           url: 'http://capsulelink.com/api/Links/GenerateGroupLink',
           data: dataToSend,
           dataType: 'json',
-          headers: { 'Authorization': 'Bearer null' },
+          headers: { 
+            'Authorization': 'Bearer null', 
+            'Access-Control-Allow-Origin': '*'
+          },
           success: function(returnedData) {
             DisplayGroupLink(returnedData);
           }
@@ -118,4 +129,3 @@ function DisplayGroupLink(url) {
   $('#generatedUrl').val('http://capsulelink.com/'+url);
   $('.overlay').show();
 }
-
