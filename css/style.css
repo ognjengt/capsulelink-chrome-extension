@@ -37,6 +37,21 @@ a{
   font-weight: 600;
 }
 
+.logout{
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: 25px;
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #2ecc71;
+  cursor: pointer;
+}
+
+.logout:hover{
+  color: #198764;
+}
+
 a:hover{
   text-decoration: none
 }

@@ -16,6 +16,7 @@ window.onload = function() {
       if(result.token != 'null') {
         setUsername(result.token);
         $('#loginBtn').hide();
+        $('#logout').show();
       }
     });
     
@@ -25,8 +26,7 @@ window.onload = function() {
     var addedLinks = [];
     chrome.storage.sync.get(['addedLinks'], function(result) {
       addedLinks = result.addedLinks;
-
-
+      
       chrome.tabs.getSelected(null,function(tab) {
         var link = tab.url;
         addedLinks.push(link)
@@ -53,7 +53,18 @@ window.onload = function() {
   })
 
   document.getElementById('loginBtn').addEventListener('click', function(e) {
-    $('#loginOverlay').show();
+    $('#loginOverlay').fadeIn();
+    e.target.blur();
+  })
+
+  document.getElementById('logout').addEventListener('click', function(e) {
+    
+    chrome.storage.sync.set({'token': 'null'}, function() {
+      console.log('logged out');
+      $('.loggedInUsername').html('');
+      $('#logout').hide();
+      $('#loginBtn').show();
+    });
     e.target.blur();
   })
 
@@ -74,6 +85,7 @@ window.onload = function() {
       },
       success: function(token) {
         // todo, ako se ne dobije validan token, ispisati poruku da se nije uspesno ulogovao!!!
+        console.log(token);
         chrome.storage.sync.set({'token': token}, function() {
           console.log('Token set up');
           setUsername(token);
@@ -81,7 +93,13 @@ window.onload = function() {
           $('#email').val('');
           $('#password').val('');
           $('#loginBtn').hide();
+          $('#errorMsg').html('');
+          $('#logout').show();
         });
+      },
+      error: function(err) {
+        console.log(err.responseText);
+        $('#errorMsg').html(err.responseText);
       }
     });
   })
@@ -136,7 +154,7 @@ window.onload = function() {
     $('#email').val('');
     $('#password').val('');
     $('#loginOverlay').hide();
-
+    $('#errorMsg').html('');
   })
 
 
@@ -175,7 +193,7 @@ function RenderLinks(addedLinks) {
 function DisplayGroupLink(url) {
   // todo hide all and display only group link.
   $('#generatedUrl').val('http://capsulelink.com/'+url);
-  $('#overlay1').show();
+  $('#overlay1').fadeIn();
 }
 
 function parseJwt (token) {
