@@ -16,6 +16,7 @@ html{
 
 .content-wrapper{
   text-align: center;
+  margin-top: 30px;
 }
 
 .links{
@@ -26,6 +27,14 @@ html{
 a{
   text-decoration: none;
   font-weight: 500;
+}
+
+.loggedInUsername{
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 0.9em;
+  font-weight: 600;
 }
 
 a:hover{
@@ -151,6 +160,19 @@ a:hover{
   border-radius: 4px;
 }
 
+.loginPopup{
+  width: 450px;
+  height: 270px;
+  border: 2px solid #2ECC71;
+  background: #323441;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  border-radius: 4px;
+}
+
 .generatedInput{
   width: 90%;
   height: 60px;
@@ -161,6 +183,22 @@ a:hover{
   padding: 20px;
   background: #272833;
   font-size: 1.1em;
+  margin-top: 20px;
+  border: 2px solid #2ecc71;
+  color: #fff;
+  padding-right: 50px;
+}
+
+.generatedInputLogin{
+  width: 90%;
+  height: 40px;
+  border-radius: 100px;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  padding: 20px;
+  background: #272833;
+  font-size: 0.98em;
   margin-top: 20px;
   border: 2px solid #2ecc71;
   color: #fff;

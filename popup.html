@@ -12,11 +12,16 @@
   <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 </head>
 <body>
+
+  <div class="loggedInUsername"></div>
+
+
   <div class="container-fluid">
     <div class="content-wrapper">
       <h2>capsule<span class="green">link</span></h2>
       <button id="addLink" class="btn myButton"><i class="ion ion-plus green"></i> Add this page</button>
       <button id="clearLinks" class="btn myButton"><i class="ion ion-close green"></i> Clear all</button>
+      <button id="loginBtn" class="btn myButton"><i class="ion ion-log-in green"></i> Login</button>
 
       <div class="links" id="links">
         
@@ -30,7 +35,7 @@
     </div>
   </div>
 
-  <div class="overlay">
+  <div class="overlay" id="overlay1">
       <div class="popup">
         <h4>Group url</h4>
         <input type="text" class="generatedInput" id="generatedUrl">
@@ -38,6 +43,16 @@
         <div class="close-popup"><i class="ion ion-close"></i></div>
       </div>
   </div>
+
+  <div class="overlay" id="loginOverlay">
+    <div class="loginPopup">
+      <h4>Login</h4>
+      <input type="text" class="generatedInputLogin" id="email" placeholder="Email">
+      <input type="password" class="generatedInputLogin" id="password" placeholder="Password">
+      <button class="btn generateButton" id="loginCallToAction">Login</button>
+      <div class="close-popup"><i class="ion ion-close"></i></div>
+    </div>
+</div>
 
   <script src="popup.js"></script>
   <script src="jquery-1.10.2.min.js"></script>

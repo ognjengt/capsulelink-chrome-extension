@@ -10,6 +10,14 @@ window.onload = function() {
         RenderLinks([]);
       });
     }
+
+    chrome.storage.sync.get(['token'], function(result) {
+      console.log(result);
+      if(result.token != 'null') {
+        setUsername(result.token);
+        $('#loginBtn').hide();
+      }
+    });
     
   });
 
@@ -41,8 +49,41 @@ window.onload = function() {
       console.log('addedLinks cleared');
       RenderLinks([]);
     });
-
     e.target.blur();
+  })
+
+  document.getElementById('loginBtn').addEventListener('click', function(e) {
+    $('#loginOverlay').show();
+    e.target.blur();
+  })
+
+  $(document).on('click', '#loginCallToAction', function() {
+
+    var dataToSend = {
+      Email: $('#email').val(),
+      Password: $('#password').val()
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: 'http://capsulelink.com/api/Auth/Login',
+      data: dataToSend,
+      dataType: 'json',
+      headers: { 
+        'Access-Control-Allow-Origin': '*'
+      },
+      success: function(token) {
+        // todo, ako se ne dobije validan token, ispisati poruku da se nije uspesno ulogovao!!!
+        chrome.storage.sync.set({'token': token}, function() {
+          console.log('Token set up');
+          setUsername(token);
+          $('#loginOverlay').hide();
+          $('#email').val('');
+          $('#password').val('');
+          $('#loginBtn').hide();
+        });
+      }
+    });
   })
 
 
@@ -62,18 +103,21 @@ window.onload = function() {
 
 
         // Todo get token!
-        $.ajax({
-          type: 'POST',
-          url: 'http://capsulelink.com/api/Links/GenerateGroupLink',
-          data: dataToSend,
-          dataType: 'json',
-          headers: { 
-            'Authorization': 'Bearer null', 
-            'Access-Control-Allow-Origin': '*'
-          },
-          success: function(returnedData) {
-            DisplayGroupLink(returnedData);
-          }
+        chrome.storage.sync.get(['token'], function(result) {
+          $.ajax({
+            type: 'POST',
+            url: 'http://capsulelink.com/api/Links/GenerateGroupLink',
+            data: dataToSend,
+            dataType: 'json',
+            headers: { 
+              'Authorization': 'Bearer '+result.token, 
+              'Access-Control-Allow-Origin': '*'
+            },
+            success: function(returnedData) {
+              DisplayGroupLink(returnedData);
+            }
+          });
+
         });
       });
     });
@@ -87,8 +131,12 @@ window.onload = function() {
   })
 
   $(document).on('click', '.close-popup', function() {
-    $('.overlay').hide();
+    $('#overlay1').hide();
     $('#generatedUrl').val('');
+    $('#email').val('');
+    $('#password').val('');
+    $('#loginOverlay').hide();
+
   })
 
 
@@ -127,5 +175,16 @@ function RenderLinks(addedLinks) {
 function DisplayGroupLink(url) {
   // todo hide all and display only group link.
   $('#generatedUrl').val('http://capsulelink.com/'+url);
-  $('.overlay').show();
+  $('#overlay1').show();
+}
+
+function parseJwt (token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace('-', '+').replace('_', '/');
+  return JSON.parse(window.atob(base64));
+}
+
+function setUsername(token) {
+  var decodedToken = parseJwt(token);
+  $('.loggedInUsername').html(decodedToken.email);
 }
